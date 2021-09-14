@@ -1,1 +1,17 @@
 @import "https://cdn.jsdelivr.net/npm/water.css@2/out/water.css";
+@import "./views/keypad/keypad.css";
+
+.problem {
+  font-size: 3.2em;
+}
+
+.button-next,
+.button-next:hover {
+  background-color: #339733;
+  height: 2.7em;
+  font-size: 1.3em;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

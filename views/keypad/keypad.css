@@ -1,0 +1,20 @@
+.keypad {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.keypad button {
+  height: 2.7em;
+  font-size: 1.3em;
+}
+
+.keypad .button-back {
+  background-color: #d5a031;
+}
+.keypad .button-done {
+  background-color: #339733;
+}
