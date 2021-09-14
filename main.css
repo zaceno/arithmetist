@@ -1,4 +1,5 @@
 @import "./views/keypad/keypad.css";
+@import "./views/badge/badge.css";
 
 * {
   margin: 0;
@@ -18,7 +19,7 @@ body {
   background: #1a0c24;
   color: #fcf6e6;
   font-family: sans-serif;
-  font-size: 16px;
+  font-size: 21px;
 }
 
 button {
@@ -26,7 +27,7 @@ button {
   color: #fcf6e6;
   background-color: #886a9d;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 21px;
   margin: 0.3em;
   border-radius: 0.3em;
 }
@@ -38,15 +39,25 @@ button.active {
   margin-bottom: calc(0.3em - 2px);
 }
 
-.problem {
-  font-size: 3.2em;
+.view-problem .problem,
+.view-answer .problem {
+  position: absolute;
+  top: 2em;
+  font-size: 2.3em;
+  margin-left: 0.3em;
+}
+
+.view-answer .badge {
+  position: absolute;
+  left: calc(50% - 1em);
+  top: 4em;
 }
 
 .button-next,
 .button-next:hover {
   background-color: #339733;
-  height: 2.7em;
-  font-size: 1.3em;
+  height: 1.5em;
+  font-size: 2em;
   position: absolute;
   bottom: 0;
   left: 0;

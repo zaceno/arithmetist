@@ -1,0 +1,25 @@
+.badge {
+  font-size: 3em;
+  --size: 2em;
+  box-sizing: border-box;
+  width: var(--size);
+  height: var(--size);
+  border-radius: calc(var(--size) / 2);
+  border: 3px #fcf6e6 solid;
+  color: #ffffff;
+  text-align: center;
+  line-height: calc(var(--size) * 0.95);
+  font-weight: bold;
+}
+.badge.correct {
+  background-color: #339733;
+}
+.badge.correct::after {
+  content: "\2713";
+}
+.badge.incorrect {
+  background-color: #bd5424;
+}
+.badge.incorrect::after {
+  content: "\261D";
+}

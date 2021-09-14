@@ -1,9 +1,10 @@
 import { app } from "hyperapp"
-import { main, button, text, section, p } from "./lib/html.js"
-import keypad from "./views/keypad/keypad.js"
 import debuglog from "./lib/debuglog.js"
 import persistence from "./lib/persistence.js"
-
+import { main, button, text, section, p, div } from "./lib/html.js"
+import keypad from "./views/keypad/keypad.js"
+import badge from "./views/badge/badge.js"
+import problem from "./views/problem.js"
 /**
  * @template X
  * @typedef {import('hyperapp').Action<State, X>} Action
@@ -62,29 +63,27 @@ const Check = state => ({
 })
 
 /** @param {State} state */
-const initial = state => button({ onclick: Start }, text("start"))
+const initialView = state =>
+  section(
+    { class: "view view-initial" },
+    button({ onclick: Start }, text("start"))
+  )
 
 /** @param {State} state */
-const problem = state =>
-  section([
-    p(
-      { class: "problem" },
-      text(`${state.left} \u00D7 ${state.right} = ${state.answer}`)
-    ),
+const problemView = state =>
+  section({ class: "view view-problem" }, [
+    problem({ left: state.left, right: state.right, answer: state.answer }),
     keypad({ onBack: Back, onDone: Check, onEnterDigit: Enter }),
   ])
 
 /** @param {State} state */
-const answer = state => {
-  let correctAnswer = state.left * state.right
-  let answeredCorrectly = correctAnswer === +state.answer
-  return section([
-    p(
-      { class: { problem: true, correct: answeredCorrectly } },
-      text(`${state.left} \u00D7 ${state.right} = ${correctAnswer}`)
+const answerView = state => {
+  return section({ class: "view view-answer" }, [
+    problem({ left: state.left, right: state.right }),
+    badge(
+      state.answer === "" + state.left * state.right ? "correct" : "incorrect"
     ),
-    p(text(answeredCorrectly ? "Rätt!" : "Försök igen!")),
-    button({ class: "button-next", onclick: Start }, text("Nästa >")),
+    button({ class: "button-next", onclick: Start }, text("\u27A9")),
   ])
 }
 
@@ -94,10 +93,10 @@ app({
   view: (/**@type {State} */ state) =>
     main(
       state.mode === "problem"
-        ? problem(state)
+        ? problemView(state)
         : state.mode === "answer"
-        ? answer(state)
-        : initial(state)
+        ? answerView(state)
+        : initialView(state)
     ),
   dispatch: d => persistence(debuglog(d)),
 })
