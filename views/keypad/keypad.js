@@ -12,7 +12,7 @@ const digitButton = props =>
   button(
     {
       ontouchstart: withPreventDefault([props.onclick, props.digit]),
-      onmousedown: [props.onclick, props.digit],
+      onclick: [props.onclick, props.digit],
     },
     text(props.digit)
   )
@@ -33,7 +33,7 @@ export default props => {
     {
       class: "button-back",
       ontouchstart: withPreventDefault(props.onBack),
-      onmousedown: props.onBack,
+      onclick: props.onBack,
     },
     text("\u21D0")
   )
@@ -42,7 +42,7 @@ export default props => {
     {
       class: "button-done",
       onttouchstart: withPreventDefault(props.onDone),
-      onmousedown: props.onDone,
+      onclick: props.onDone,
     },
     text("\u2713")
   )
