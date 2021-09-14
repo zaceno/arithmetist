@@ -1,4 +1,5 @@
 import { div, button, text } from "../../lib/html.js"
+import { withPreventDefault } from "../../lib/decorators.js"
 /** @template S,X @typedef {import('hyperapp').Action<S,X>} Action */
 
 /**
@@ -10,7 +11,7 @@ import { div, button, text } from "../../lib/html.js"
 const digitButton = props =>
   button(
     {
-      ontouchstart: [props.onclick, props.digit],
+      ontouchstart: withPreventDefault([props.onclick, props.digit]),
       onmousedown: [props.onclick, props.digit],
     },
     text(props.digit)
@@ -23,32 +24,28 @@ const digitButton = props =>
  * @param {Action<S, any>} props.onBack
  * @param {Action<S, any>} props.onDone
  */
-export default props =>
-  div({ class: "keypad" }, [
-    digitButton({ digit: 1, onclick: props.onEnterDigit }),
-    digitButton({ digit: 2, onclick: props.onEnterDigit }),
-    digitButton({ digit: 3, onclick: props.onEnterDigit }),
-    digitButton({ digit: 4, onclick: props.onEnterDigit }),
-    digitButton({ digit: 5, onclick: props.onEnterDigit }),
-    digitButton({ digit: 6, onclick: props.onEnterDigit }),
-    digitButton({ digit: 7, onclick: props.onEnterDigit }),
-    digitButton({ digit: 8, onclick: props.onEnterDigit }),
-    digitButton({ digit: 9, onclick: props.onEnterDigit }),
-    button(
-      {
-        class: "button-back",
-        ontouchstart: props.onBack,
-        onmousedown: props.onBack,
-      },
-      text("\u21D0")
-    ),
-    digitButton({ digit: 0, onclick: props.onEnterDigit }),
-    button(
-      {
-        class: "button-done",
-        onttouchstart: props.onDone,
-        onmousedown: props.onDone,
-      },
-      text("\u2713")
-    ),
-  ])
+export default props => {
+  /** @param {number} n */
+  const digits = [...Array(10).keys()].map(n =>
+    digitButton({ digit: n, onclick: props.onEnterDigit })
+  )
+  const back = button(
+    {
+      class: "button-back",
+      ontouchstart: withPreventDefault(props.onBack),
+      onmousedown: props.onBack,
+    },
+    text("\u21D0")
+  )
+
+  const check = button(
+    {
+      class: "button-done",
+      onttouchstart: withPreventDefault(props.onDone),
+      onmousedown: props.onDone,
+    },
+    text("\u2713")
+  )
+
+  return div({ class: "keypad" }, [...digits.slice(1), back, digits[0], check])
+}
