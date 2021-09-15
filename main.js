@@ -16,5 +16,5 @@ app({
         ? answer(state)
         : initial(state)
     ),
-  dispatch: persistence,
+  //  dispatch: persistence,
 })
