@@ -8,6 +8,7 @@ import { initScoreboard, getProblem, scoreProblem } from "./scoreboard.js"
  * @prop {number} left
  * @prop {number} right
  * @prop {string} answer
+ * @prop {number} max
  */
 
 /** @returns {State} */
@@ -17,6 +18,7 @@ export const Init = () => ({
   right: 0,
   answer: "",
   mode: "initial",
+  max: 2,
 })
 
 /**
@@ -26,7 +28,7 @@ export const Init = () => ({
 
 /** @type {Action<any>} */
 export const NextProblem = state => {
-  let { left, right } = getProblem(state.score)
+  let { left, right } = getProblem(state.score, state.max)
   return {
     ...state,
     left,
@@ -59,3 +61,12 @@ export const Check = state => {
   score = scoreProblem(score, { left, right }, isCorrect)
   return { ...state, score, mode: "answer" }
 }
+
+/** @type {Action<any>} */
+export const BackToStart = state => ({
+  ...state,
+  mode: "initial",
+})
+
+/** @type {Action<number>} */
+export const SetMax = (state, max) => ({ ...state, max })

@@ -84,22 +84,25 @@ const sum = nums => nums.reduce((tot, x) => tot + x, 0)
 
 /**
  * @param {Scoreboard} scoreboard
+ * @param {number} max
  * @returns {number}
  */
-const getNumber = scoreboard => {
-  let probs = scoreboard.map(c => (1.01 - getRatio(c)) ** 2)
+const getNumber = (scoreboard, max) => {
+  let options = scoreboard.filter(c => c.number <= max)
+  let probs = options.map(c => 1.01 - getRatio(c))
   let rando = Math.random() * sum(probs)
   let fltrd = cumulative(probs).filter(p => p < rando)
-  return scoreboard[fltrd.length].number
+  return options[fltrd.length].number
 }
 
 /**
  * @param {Scoreboard} scoreboard
+ * @param {number} max
  * @returns {Problem}
  */
-export const getProblem = scoreboard => ({
-  left: getNumber(scoreboard),
-  right: getNumber(scoreboard),
+export const getProblem = (scoreboard, max) => ({
+  left: getNumber(scoreboard, max),
+  right: getNumber(scoreboard, max),
 })
 
 /**

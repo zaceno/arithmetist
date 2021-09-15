@@ -4,7 +4,7 @@ import { Init } from "./actions.js"
 import initial from "./initial.js"
 import problem from "./problem.js"
 import answer from "./answer.js"
-
+import persistence from "./lib/persistence.js"
 app({
   node: /** @type {HTMLElement}*/ (document.getElementById("app")),
   init: Init(),
@@ -16,4 +16,5 @@ app({
         ? answer(state)
         : initial(state)
     ),
+  dispatch: persistence,
 })
