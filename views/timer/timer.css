@@ -1,0 +1,17 @@
+.timercontainer {
+  padding: 0;
+  height: 5px;
+  border: 1px black solid;
+  background-color: cornflowerblue;
+  position: relative;
+}
+
+.timerbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  bottom: 0;
+  margin: 0;
+  background-color: hotpink;
+}

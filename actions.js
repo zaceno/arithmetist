@@ -1,5 +1,8 @@
 /** @typedef { import('./scoreboard.js').Scoreboard} Scoreboard*/
 import { initScoreboard, getProblem, scoreProblem } from "./scoreboard.js"
+import * as Timer from "./timer.js"
+/** @typedef {import('./timer.js').TimerState} TimerState*/
+const PROBLEM_DURATION = 9000
 
 /**
  * @typedef State
@@ -9,6 +12,7 @@ import { initScoreboard, getProblem, scoreProblem } from "./scoreboard.js"
  * @prop {number} right
  * @prop {string} answer
  * @prop {number} max
+ * @prop {TimerState} timer
  */
 
 /** @returns {State} */
@@ -19,6 +23,7 @@ export const Init = () => ({
   answer: "",
   mode: "initial",
   max: 2,
+  timer: Timer.initial,
 })
 
 /**
@@ -35,7 +40,15 @@ export const NextProblem = state => {
     right,
     answer: "",
     mode: "problem",
+    timer: Timer.start(Date.now(), PROBLEM_DURATION),
   }
+}
+
+/** @type {Action<number>} */
+export const TimerUpdate = (state, now) => {
+  let timer = Timer.update(state.timer, now)
+  if (state.mode === "problem" && Timer.timeUp(timer)) return Check
+  return { ...state, timer }
 }
 
 /** @type {Action<number>} */
@@ -69,4 +82,4 @@ export const BackToStart = state => ({
 })
 
 /** @type {Action<number>} */
-export const SetMax = (state, max) => ({ ...state, max })
+export const SetMax = (state, max) => ({ ...state, max: Math.max(max, 2) })

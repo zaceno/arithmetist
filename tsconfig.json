@@ -14,5 +14,5 @@
       "hyperapp": [".types/hyperapp"]
     }
   },
-  "exclude": [".types/**/*", "old2/**/*"]
+  "exclude": [".types/**/*"]
 }

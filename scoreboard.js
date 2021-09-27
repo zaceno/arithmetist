@@ -109,7 +109,15 @@ export const getProblem = (scoreboard, max) => ({
  * @param {NumberCounter} counter
  * @returns {number}
  */
-const getRatio = ({ wins, seen }) => (seen === 0 ? 0 : wins / seen)
+const getRatio = ({ wins, seen }) =>
+  seen === 0 ? 0 : wins / Math.max(seen, 20)
+
+/**
+ * @param {Scoreboard} scoreboard
+ * @returns number[]
+ */
+export const getRatios = scoreboard =>
+  scoreboard.sort((l, r) => l.number - r.number).map(getRatio)
 
 /**
  * @param {NumberCounter} counter

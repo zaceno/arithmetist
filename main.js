@@ -1,10 +1,12 @@
 import { app } from "hyperapp"
 import { main } from "./lib/html.js"
-import { Init } from "./actions.js"
+import { Init, TimerUpdate } from "./actions.js"
 import initial from "./initial.js"
 import problem from "./problem.js"
 import answer from "./answer.js"
 import persistence from "./lib/persistence.js"
+import interval from "./lib/interval.js"
+
 app({
   node: /** @type {HTMLElement}*/ (document.getElementById("app")),
   init: Init(),
@@ -16,5 +18,8 @@ app({
         ? answer(state)
         : initial(state)
     ),
-  //  dispatch: persistence,
+  subscriptions: state => [
+    state.mode === "problem" && interval(TimerUpdate, 100),
+  ],
+  dispatch: persistence,
 })
