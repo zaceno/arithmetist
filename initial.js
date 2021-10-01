@@ -1,4 +1,4 @@
-import { p, br, button, text, section, input, div } from "./lib/html.js"
+import { p, br, button, text, section, input, div } from "@hyperapp/html"
 import { NextProblem, SetMax } from "./actions.js"
 import { withNumericTargetValue } from "./lib/decorators.js"
 import { getScore, getRatios } from "./scoreboard.js"

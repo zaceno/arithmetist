@@ -1,4 +1,4 @@
-import { div } from "../../lib/html.js"
+import { div } from "@hyperapp/html"
 
 /** @param {'correct' | 'incorrect'} type*/
 export default type => div({ class: `badge ${type}` })

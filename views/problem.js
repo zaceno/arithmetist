@@ -1,4 +1,4 @@
-import { p, text } from "../lib/html.js"
+import { p, text } from "@hyperapp/html"
 
 /**
  * @param {object} props

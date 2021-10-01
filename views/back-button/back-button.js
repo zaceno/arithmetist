@@ -1,4 +1,4 @@
-import { button } from "../../lib/html.js"
+import { button } from "@hyperapp/html"
 import { withPreventDefault } from "../../lib/decorators.js"
 
 /**

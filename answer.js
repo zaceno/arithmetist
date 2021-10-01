@@ -1,4 +1,4 @@
-import { button, text, section } from "./lib/html.js"
+import { button, text, section } from "@hyperapp/html"
 import problem from "./views/problem.js"
 import badge from "./views/badge/badge.js"
 import { NextProblem, BackToStart } from "./actions.js"

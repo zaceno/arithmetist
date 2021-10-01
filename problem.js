@@ -1,4 +1,4 @@
-import { section } from "./lib/html.js"
+import { section } from "@hyperapp/html"
 import problem from "./views/problem.js"
 import keypad from "./views/keypad/keypad.js"
 import backButton from "./views/back-button/back-button.js"
