@@ -1,5 +1,5 @@
 import { app } from "hyperapp"
-import { main } from "./lib/html.js"
+import { main } from "@hyperapp/html"
 import { Init, TimerUpdate } from "./actions.js"
 import initial from "./initial.js"
 import problem from "./problem.js"

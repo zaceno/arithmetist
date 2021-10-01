@@ -8,11 +8,13 @@
     "noImplicitThis": false,
     "target": "esnext",
     "module": "esnext",
+    "noUnusedLocals": true,
     "baseUrl": ".",
-    "typeRoots": [".types"],
     "paths": {
-      "hyperapp": [".types/hyperapp"]
+      "hyperapp": ["types/hyperapp.d.ts"],
+      "@hyperapp/html": ["types/hyperapp-html.d.ts"],
+      "@hyperapp/svg": ["types/hyperapp-svg.d.ts"]
     }
   },
-  "exclude": [".types/**/*"]
+  "include": ["**/*.js", "**/*.d.ts"]
 }
