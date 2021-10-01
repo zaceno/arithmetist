@@ -1,6 +1,6 @@
 import { p, br, button, text, section, input, div } from "@hyperapp/html"
 import { NextProblem, SetMax } from "./actions.js"
-import { withNumericTargetValue } from "./lib/decorators.js"
+import { withNumericTargetValue } from "lib/decorators.js"
 import { getScore, getRatios } from "./scoreboard.js"
 /** @typedef {import('./actions.js').State} State */
 /** @template X @typedef {import('./actions.js').Action<X>} Action */
@@ -36,7 +36,7 @@ const scoreSetting = props =>
         text(index + 1)
       )
     ),
-    br(),
+    br({}),
     input({
       style: {
         backgroundColor: "#fff",
@@ -60,7 +60,7 @@ export default state =>
       max: state.max,
       OnSetMax: SetMax,
     }),
-    p(),
+    p({}),
     p(text("Score: " + getScore(state.score))),
     p([button({ class: "startbutton", onclick: NextProblem }, text("\u27A9"))]),
   ])

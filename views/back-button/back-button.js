@@ -1,5 +1,5 @@
 import { button } from "@hyperapp/html"
-import { withPreventDefault } from "../../lib/decorators.js"
+import { withPreventDefault } from "lib/decorators.js"
 
 /**
  * @template S

@@ -4,8 +4,8 @@ import { Init, TimerUpdate } from "./actions.js"
 import initial from "./initial.js"
 import problem from "./problem.js"
 import answer from "./answer.js"
-import persistence from "./lib/persistence.js"
-import interval from "./lib/interval.js"
+import persistence from "lib/persistence.js"
+import interval from "lib/interval.js"
 
 app({
   node: /** @type {HTMLElement}*/ (document.getElementById("app")),

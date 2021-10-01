@@ -1,5 +1,5 @@
 import { div, button, text } from "@hyperapp/html"
-import { withPreventDefault } from "../../lib/decorators.js"
+import { withPreventDefault } from "lib/decorators.js"
 /** @template S,X @typedef {import('hyperapp').Action<S,X>} Action */
 
 /**
