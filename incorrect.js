@@ -6,7 +6,7 @@ import backButton from "./views/back-button/back-button.js"
 
 /** @param {import('./actions.js').State} state */
 export default state =>
-  section({ class: "view view-answer" }, [
+  section({ class: "view view-incorrect" }, [
     backButton({ onclick: BackToStart }),
     problem({ left: state.left, right: state.right }),
     badge(

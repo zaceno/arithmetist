@@ -42,7 +42,7 @@ button.active {
 }
 
 .view-problem .problem,
-.view-answer .problem {
+.view-incorrect .problem {
   position: absolute;
   top: 3em;
   font-size: 2.3em;
@@ -50,7 +50,8 @@ button.active {
 }
 
 .view-problem .backbutton,
-.view-answer .backbutton {
+.view-correct .backbutton,
+.view-incorrect .backbutton {
   position: absolute;
   top: 0.2em;
   left: 0.2em;
@@ -63,10 +64,24 @@ button.active {
   right: 0.3em;
 }
 
-.view-answer .badge {
+.view-incorrect .badge {
   position: absolute;
   left: calc(50% - 1em);
   top: 4.2em;
+}
+
+.view-correct .successBadge {
+  width: 100px;
+  height: 100px;
+  top: 100px;
+  left: 100px;
+  position: absolute;
+}
+.view-correct .successBadge.transition {
+  transition: all 0.3s ease-in-out;
+  transform: scale(2, 2);
+  transform-origin: center;
+  opacity: 0;
 }
 
 .view-initial .startbutton {

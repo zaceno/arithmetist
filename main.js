@@ -3,7 +3,8 @@ import { main } from "@hyperapp/html"
 import { Init, TimerUpdate } from "./actions.js"
 import initial from "./initial.js"
 import problem from "./problem.js"
-import answer from "./answer.js"
+import correct from "./correct.js"
+import incorrect from "./incorrect.js"
 import persistence from "lib/persistence.js"
 import interval from "lib/interval.js"
 
@@ -14,8 +15,10 @@ app({
     main(
       state.mode === "problem"
         ? problem(state)
-        : state.mode === "answer"
-        ? answer(state)
+        : state.mode === "correct"
+        ? correct(state)
+        : state.mode === "incorrect"
+        ? incorrect(state)
         : initial(state)
     ),
   subscriptions: state => [

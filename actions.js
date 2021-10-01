@@ -1,18 +1,20 @@
 /** @typedef { import('./scoreboard.js').Scoreboard} Scoreboard*/
 import { initScoreboard, getProblem, scoreProblem } from "./scoreboard.js"
 import * as Timer from "./timer.js"
+import transition from "lib/transition.js"
 /** @typedef {import('./timer.js').TimerState} TimerState*/
 const PROBLEM_DURATION = 9000
 
 /**
  * @typedef State
- * @prop {'initial' | 'problem' | 'answer'} mode
+ * @prop {'initial' | 'problem' | 'correct' | 'incorrect' } mode
  * @prop {Scoreboard} score
  * @prop {number} left
  * @prop {number} right
  * @prop {string} answer
  * @prop {number} max
  * @prop {TimerState} timer
+ * @prop {boolean} animating
  */
 
 /** @returns {State} */
@@ -24,6 +26,7 @@ export const Init = () => ({
   mode: "initial",
   max: 2,
   timer: Timer.initial,
+  animating: false,
 })
 
 /**
@@ -72,7 +75,10 @@ export const Check = state => {
   let { answer, left, right, score } = state
   let isCorrect = +answer === left * right
   score = scoreProblem(score, { left, right }, isCorrect)
-  return { ...state, score, mode: "answer" }
+  return [
+    { ...state, score, mode: isCorrect ? "correct" : "incorrect" },
+    isCorrect && transition(".successBadge", NextProblem),
+  ]
 }
 
 /** @type {Action<any>} */
