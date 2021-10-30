@@ -1,4 +1,4 @@
-# Arithmentist
+# Arithmetist
 
 A simple web app for anyone to practice their multiplication skills.
 Designed to be used on a smartphone.
