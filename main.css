@@ -1,106 +1,24 @@
-@import "./views/keypad/keypad.css";
-@import "./views/badge/badge.css";
-@import "./views/back-button/back-button.css";
-@import "./views/timer/timer.css";
-
-* {
-  margin: 0;
-  padding: 0;
-}
+@import url("./views/gauge/gauge.css");
+@import url("./views/keypad/keypad.css");
+@import url("./views/badges/badges.css");
+@import url("./views/checkbox/checkbox.css");
+@import url("./views/max-setter/max-setter.css");
+@import url("./views/pop-out-transition.css");
+@import url("./views/button/button.css");
+@import url("./views/nav-buttons/nav-buttons.css");
+@import url("./views/score/score.css");
+@import url("./views/problem/problem.css");
+@import url("./pages/pages.css");
 
 html,
 body {
+  widht: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
   position: relative;
-}
-
-body {
-  /*  background: #1a0c24;
-  color: #fcf6e6;*/
+  background-color: #fff;
   font-family: sans-serif;
-  font-size: 21px;
-}
-
-button {
-  border: none;
-  color: #fcf6e6;
-  background-color: #886a9d;
-  font-weight: bold;
-  font-size: 21px;
-  margin: 0.3em;
-  border-radius: 0.3em;
-}
-button:active,
-button.active {
-  background-color: #65437c;
-  color: #fcf6e6;
-  margin-top: calc(0.3em + 2px);
-  margin-bottom: calc(0.3em - 2px);
-}
-
-.view-problem .problem,
-.view-incorrect .problem {
-  position: absolute;
-  top: 3em;
-  font-size: 2.3em;
-  margin-left: 0.3em;
-}
-
-.view-problem .backbutton,
-.view-correct .backbutton,
-.view-incorrect .backbutton {
-  position: absolute;
-  top: 0.2em;
-  left: 0.2em;
-}
-
-.view-problem .timer {
-  position: absolute;
-  top: 0.1em;
-  left: 0.3em;
-  right: 0.3em;
-}
-
-.view-incorrect .badge {
-  position: absolute;
-  left: calc(50% - 1em);
-  top: 4.2em;
-}
-
-.view-correct .successBadge {
-  width: 100px;
-  height: 100px;
-  top: 100px;
-  left: 100px;
-  position: absolute;
-}
-.view-correct .successBadge.transition {
-  transition: all 0.3s ease-in-out;
-  transform: scale(2, 2);
-  transform-origin: center;
-  opacity: 0;
-}
-
-.view-initial .startbutton {
-  background-color: #339733;
-  height: 1.5em;
-  font-size: 2em;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.button-next,
-.button-next:hover {
-  background-color: #339733;
-  height: 1.5em;
-  font-size: 2em;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }

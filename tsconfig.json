@@ -8,13 +8,12 @@
     "noImplicitThis": false,
     "target": "esnext",
     "module": "esnext",
-    "noUnusedLocals": true,
     "baseUrl": ".",
     "paths": {
-      "hyperapp": ["types/hyperapp.d.ts"],
-      "@hyperapp/html": ["types/hyperapp-html.d.ts"],
-      "@hyperapp/svg": ["types/hyperapp-svg.d.ts"]
+      "hyperapp": [".types/hyperapp.d.ts"],
+      "@hyperapp/html": [".types/hyperapp-html.d.ts"],
+      "@hyperapp/svg": [".types/hyperapp-svg.d.ts"]
     }
   },
-  "include": ["**/*.js", "**/*.d.ts"]
+  "include": [".types/*.d.ts", "**/*.js", "**/*.d.ts"]
 }

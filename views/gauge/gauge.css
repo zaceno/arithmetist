@@ -1,0 +1,16 @@
+.gauge-container {
+  width: 100%;
+  min-height: 10px;
+  position: relative;
+  border: 1px #000000ff solid;
+  background-color: #7bbc81ff;
+}
+
+.gauge-filler {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  background-color: #f74603ff;
+}

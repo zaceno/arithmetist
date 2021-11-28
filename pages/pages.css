@@ -1,0 +1,76 @@
+.page {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.page .gauge {
+  height: 15px;
+  margin: 0 0 15px 0;
+}
+
+.page .nav-button-back {
+  display: block;
+  margin: 15px;
+  height: 2.5em;
+  width: 4em;
+  box-sizing: border-box;
+}
+
+.page.problempage .keypad {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  height: 18em;
+}
+
+.page .problem {
+  position: absolute;
+  top: 2.7em;
+  left: 15px;
+  right: 15px;
+}
+
+.page .nav-button-start,
+.page .nav-button-next {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  height: 2.5em;
+}
+.page .nav-button-start:active,
+.page .nav-button-next:active {
+  top: auto;
+  bottom: 14px;
+}
+
+.page .badge-incorrect,
+.page .badge-correct {
+  position: absolute;
+  top: 3.6em;
+  left: calc(50% - 79px);
+}
+
+.page.startpage .score {
+  position: absolute;
+  left: 15px;
+  top: 2em;
+}
+
+.page.startpage .max-setter {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  top: 8em;
+}
+
+.page.startpage .checkbox {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  bottom: 4em;
+}
