@@ -34,7 +34,7 @@ import persistence from "./io/persistence.js"
  */
 
 /** @type {Action<State, void>}*/
-const Init = state => [
+const Init = () => [
   /** @type {State}*/ ({}),
   [
     dispatch => {
@@ -127,6 +127,6 @@ app({
       ? incorrectPage.subs(state)
       : state.pageName === "problem"
       ? problemPage.subs(state)
-      : []),
+      : startPage.subs(state)),
   ],
 })

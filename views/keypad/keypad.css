@@ -13,8 +13,8 @@
 }
 
 .keypad button.keypad-back {
-  background-color: #f8e8acff;
+  background-color: var(--yellow);
 }
 .keypad button.keypad-enter {
-  background-color: #b4f8acff;
+  background-color: var(--green);
 }

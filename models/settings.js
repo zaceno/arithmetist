@@ -36,7 +36,7 @@ export default ({ get, set }) => {
 
   /** @type {Action<S, number>}*/
   const SetMax = (global, max) =>
-    set(global, { ...get(global), max: Math.max(max, 3) })
+    set(global, { ...get(global), max: Math.min(Math.max(max, 3), 12) })
 
   /** @type {Getter<S, boolean>} */
   const useTimer = state => !get(state).practice

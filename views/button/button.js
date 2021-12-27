@@ -7,7 +7,7 @@ import withPreventDefault from "../../io/with-prevent-default.js"
  * @param {boolean} [props.disabled],
  * @param {ClassProp} [props.classext],
  * @param {ActionLike<S,Event,X>| false} [props.action]
- * @param {string} props.label
+ * @param {string | MaybeVNode<S> | MaybeVNode<S>[]} props.label
  */
 export default ({ action, label, disabled = false, classext = "" }) =>
   button(
@@ -21,5 +21,5 @@ export default ({ action, label, disabled = false, classext = "" }) =>
           }
         : {}),
     },
-    text(label)
+    typeof label === "string" ? text(label) : label
   )

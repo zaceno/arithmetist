@@ -14,7 +14,7 @@
 .page .nav-button-back {
   display: block;
   margin: 15px;
-  height: 2.5em;
+  height: 4rem;
   width: 4em;
   box-sizing: border-box;
 }
@@ -24,7 +24,7 @@
   bottom: 15px;
   left: 15px;
   right: 15px;
-  height: 18em;
+  height: 18rem;
 }
 
 .page .problem {
@@ -39,7 +39,7 @@
   position: absolute;
   bottom: 15px;
   left: 15px;
-  right: 15px;
+  width: calc(100% - 31px);
   height: 2.5em;
 }
 .page .nav-button-start:active,
@@ -65,12 +65,26 @@
   position: absolute;
   left: 15px;
   right: 15px;
-  top: 8em;
+  bottom: 12rem;
+  font-size: 1.4rem;
 }
 
-.page.startpage .checkbox {
+.page.startpage .practice-mode-toggle {
   position: absolute;
+  margin: 0;
+  padding: 0;
+  bottom: 7.5rem;
   left: 15px;
   right: 15px;
-  bottom: 4em;
+  font-size: 1.4rem;
+  line-height: 1;
+  vertical-align: middle;
+}
+.page.startpage .practice-mode-toggle .material-icons {
+  position: relative;
+  top: 0.55rem;
+  margin-right: 0.6rem;
+}
+.page.startpage .practice-mode-toggle label {
+  cursor: pointer;
 }

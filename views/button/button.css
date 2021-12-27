@@ -1,17 +1,16 @@
 .button {
   margin: 0;
-  color: #5d5d5d;
+  color: var(--text-color);
   padding: 0.3em 0.5em;
   font-size: 1.5em;
   border-radius: 0.3em;
-  border: 1px #7f7f7f solid;
-  background-color: #cccccc;
+  border: var(--widget-border);
+  background-color: var(--widget-background);
   position: relative;
-  text-shadow: 0 1px 0px #ffffff97;
+  text-shadow: var(--widget-text-shadow);
 }
 
 .button:active {
-  color: #484848;
-  background-color: #dedede;
+  background-color: var(--widget-active-background);
   top: 1px;
 }

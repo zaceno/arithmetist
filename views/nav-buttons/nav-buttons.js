@@ -1,4 +1,5 @@
 import button from "../button/button.js"
+import { span, text } from "@hyperapp/html"
 
 /**
  * @template S,X
@@ -39,5 +40,5 @@ export const startButton = ({ action, disabled }) =>
     action,
     disabled,
     classext: "nav-button-start",
-    label: "Start",
+    label: span({ class: "material-icons" }, text("play_circle")),
   })

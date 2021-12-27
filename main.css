@@ -1,12 +1,10 @@
 @import url("./views/gauge/gauge.css");
 @import url("./views/keypad/keypad.css");
 @import url("./views/badges/badges.css");
-@import url("./views/checkbox/checkbox.css");
-@import url("./views/max-setter/max-setter.css");
+@import url("./max-setter/max-setter.css");
 @import url("./views/pop-out-transition.css");
 @import url("./views/button/button.css");
 @import url("./views/nav-buttons/nav-buttons.css");
-@import url("./views/score/score.css");
 @import url("./views/problem/problem.css");
 @import url("./pages/pages.css");
 
@@ -21,4 +19,36 @@ body {
   position: relative;
   background-color: #fff;
   font-family: sans-serif;
+}
+
+:root {
+  --white: #fff;
+  --dark: #252525;
+  --dark-gray: #797979;
+  --neutral-gray: #cdcdcd;
+  --light-gray: #e4e4e4;
+  --scale-lightness: 50%;
+  --scale-saturation: 60%;
+  --red-hue: 14;
+  --green-hue: 86;
+  --yellow-hue: 49;
+  --red: hsl(var(--red-hue), var(--scale-lightness), var(--scale-saturation));
+  --green: hsl(
+    var(--green-hue),
+    var(--scale-lightness),
+    var(--scale-saturation)
+  );
+  --yellow: hsl(
+    var(--yellow-hue),
+    var(--scale-lightness),
+    var(--scale-saturation)
+  );
+  --text-color: var(--dark);
+  --widget-background: var(--neutral-gray);
+  --widget-active-background: var(--light-gray);
+  --widget-border: 1px var(--dark-gray) solid;
+  --widget-text-shadow: 0 1px 0px #ffffff97;
+}
+.material-icons {
+  font-size: 2.2rem;
 }

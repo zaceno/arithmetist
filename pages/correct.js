@@ -62,7 +62,7 @@ export default ({ get, set, Next, Back }) => {
         answer: page.left * page.right,
       }),
       exiter.apply(state, "pop-out", correctBadge()),
-      nextButton({ disabled: true, action: Next }),
+      nextButton({ action: Next }),
     ])
   }
 

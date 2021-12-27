@@ -1,9 +1,9 @@
+import { input, p, text, label, span, div } from "@hyperapp/html"
 import pageContainer from "../views/page/page.js"
-import maxSetter from "../views/max-setter/max-setter.js"
-import checkbox from "../views/checkbox/checkbox.js"
+import MaxSetter from "../max-setter/max-setter.js"
 import { startButton } from "../views/nav-buttons/nav-buttons.js"
-import scoreDisplay from "../views/score/score.js"
-/** @typedef {null} State */
+
+/** @typedef {import('../max-setter/max-setter.js').State} State */
 /** @template S @typedef {import('../models/scoring.js').Model<S>} ScoringModel */
 /** @template S @typedef {import('../models/settings.js').Model<S>} SettingsModel */
 
@@ -25,9 +25,17 @@ import scoreDisplay from "../views/score/score.js"
  * @param {Action<S, {left: number, right: number}>} props.Start
  * @returns {Model<S>}
  */
-export default ({ set, scoring, settings, Start }) => {
+export default ({ get, set, scoring, settings, Start }) => {
+  const maxSetter = MaxSetter({
+    get,
+    set,
+    getMax: settings.getMax,
+    SetMax: settings.SetMax,
+    getRatios: scoring.getRatios,
+  })
+
   /** @type {Action<S, any>} */
-  const Init = state => set(state, null)
+  const Init = maxSetter.Init
 
   /** @type {Action<S, any>} */
   const StartWithProblem = state => [
@@ -38,24 +46,64 @@ export default ({ set, scoring, settings, Start }) => {
   /** @param {S} state */
   const view = state =>
     pageContainer({ classext: "startpage" }, [
-      scoreDisplay({ value: scoring.getScore(state) }),
-      maxSetter({
-        ratios: scoring.getRatios(state),
-        SetMax: settings.SetMax,
-        max: settings.getMax(state),
-        min: 2,
-      }),
-      checkbox({
-        label: "Practice mode",
-        value: settings.isPracticeMode(state),
-        toggle: settings.TogglePractice,
-        extra: "No timer & no score",
-      }),
+      div(
+        {
+          class: "score-display",
+          style: {
+            position: "absolute",
+            top: "4rem",
+            left: "15px",
+            right: "15px",
+          },
+        },
+        [
+          p(
+            {
+              class: "score-display-label",
+              style: {
+                padding: "0",
+                margin: "0",
+                fontSize: "1.4rem",
+                textAlign: "center",
+              },
+            },
+            text("Score: ")
+          ),
+          p(
+            {
+              class: "score-display-value",
+              style: {
+                fontSize: "2.7rem",
+                textAlign: "center",
+                padding: "0",
+                margin: "0",
+              },
+            },
+            text(scoring.getScore(state))
+          ),
+        ]
+      ),
+      div({ class: "max-setter" }, [p(text("Tables:")), maxSetter.view(state)]),
+      p(
+        { class: "practice-mode-toggle" },
+        label([
+          input({
+            style: { display: "none" },
+            type: "checkbox",
+            checked: settings.isPracticeMode(state),
+            oninput: settings.TogglePractice,
+          }),
+          span(
+            { class: "material-icons" },
+            text(settings.isPracticeMode(state) ? "check_circle" : "circle")
+          ),
+          text("Practice mode"),
+        ])
+      ),
       startButton({ action: StartWithProblem }),
     ])
 
-  /** @param {S} _*/
-  const subs = _ => []
+  const subs = maxSetter.subs
 
   return { Init, view, subs }
 }

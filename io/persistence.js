@@ -1,5 +1,5 @@
 let firstRun = true
-const LS_KEY = "arithmetist-state-2"
+const LS_KEY = "arithmetist-state"
 
 /**
  * @template S
@@ -21,3 +21,7 @@ export default (dispatch, data) => {
   }
   return () => {}
 }
+
+/*
+{"scoring":[{"number":3,"seen":19,"wins":19},{"number":8,"wins":0,"seen":0},{"number":9,"wins":0,"seen":0},{"number":10,"wins":0,"seen":0},{"number":11,"wins":0,"seen":0},{"number":12,"wins":0,"seen":…
+*/
