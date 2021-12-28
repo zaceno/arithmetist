@@ -67,7 +67,7 @@ export default ({ get, set, scoring, settings, Start }) => {
                 textAlign: "center",
               },
             },
-            text("Score: ")
+            text("score:")
           ),
           p(
             {

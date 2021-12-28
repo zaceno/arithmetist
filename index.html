@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Multiplikation</title>
     <link href="./ext/material-icons.css" rel="stylesheet" />
     <link rel="stylesheet" href="main.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("./sw.js", { scope: "./" })
+      }
+    </script>
     <script type="module" src="./ext/es-module-shims.js"></script>
     <script type="importmap-shim">
       {"imports": {
