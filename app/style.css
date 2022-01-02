@@ -1,0 +1,13 @@
+@import url("./main/main.css");
+@import url("./pages/problem-page/timer/gauge.css");
+@import url("./pages/problem-page/keypad/keypad.css");
+@import url("./lib/views/badges.css");
+@import url("./pages/start/table-picker/table-picker.css");
+@import url("./pages/correct/popping-badge/pop-out-transition/pop-out-transition.css");
+@import url("./lib/views/button.css");
+@import url("./nav-buttons/nav-buttons.css");
+@import url("./problem-component/problem.css");
+@import url("./lib/views/icons.css");
+@import url("./page-container/pages.css");
+@import url("./pages/start/app-info-modal/modal/modal.css");
+@import url("./lib/views/clickable-icon.css");
