@@ -10,9 +10,10 @@
     "module": "esnext",
     "baseUrl": ".",
     "paths": {
-      "hyperapp": [".types/hyperapp.d.ts"],
-      "@hyperapp/html": [".types/hyperapp-html.d.ts"],
-      "@hyperapp/svg": [".types/hyperapp-svg.d.ts"]
+      "hyperapp": ["types/hyperapp.d.ts"],
+      "@hyperapp/html": ["types/hyperapp-html.d.ts"],
+      "@hyperapp/svg": ["types/hyperapp-svg.d.ts"],
+      "@/*": ["./app/*"]
     }
   },
   "include": [".types/*.d.ts", "**/*.js", "**/*.d.ts"]

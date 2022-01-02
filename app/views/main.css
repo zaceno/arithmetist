@@ -1,0 +1,57 @@
+@import url("./gauge/gauge.css");
+@import url("./keypad/keypad.css");
+@import url("./badges/badges.css");
+@import url("./table-picker/table-picker.css");
+@import url("./pop-out-transition.css");
+@import url("./button/button.css");
+@import url("./nav-buttons/nav-buttons.css");
+@import url("./problem/problem.css");
+@import url("./icons/icons.css");
+@import url("./pages.css");
+@import url("./modal/modal.css");
+@import url("./clickable-icon/clickable-icon.css");
+
+html,
+body {
+  widht: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background-color: #fff;
+  font-family: sans-serif;
+}
+
+:root {
+  --white: #fff;
+  --dark: #252525;
+  --dark-gray: #797979;
+  --neutral-gray: #cdcdcd;
+  --light-gray: #e4e4e4;
+  --scale-lightness: 50%;
+  --scale-saturation: 60%;
+  --red-hue: 14;
+  --green-hue: 86;
+  --yellow-hue: 49;
+  --red: hsl(var(--red-hue), var(--scale-lightness), var(--scale-saturation));
+  --green: hsl(
+    var(--green-hue),
+    var(--scale-lightness),
+    var(--scale-saturation)
+  );
+  --yellow: hsl(
+    var(--yellow-hue),
+    var(--scale-lightness),
+    var(--scale-saturation)
+  );
+  --text-color: var(--dark);
+  --widget-background: var(--neutral-gray);
+  --widget-active-background: var(--light-gray);
+  --widget-border: 1px var(--dark-gray) solid;
+  --widget-text-shadow: 0 1px 0px #ffffff97;
+}
+.material-icons {
+  font-size: 2.2rem;
+}
