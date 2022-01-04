@@ -1,5 +1,5 @@
-import button from "@/lib/views/button.js"
-import { iconGo } from "@/lib/views/icons.js"
+import button from "@/views/button.js"
+import { iconGo } from "@/views/icons.js"
 /**
  * @template S,X
  * @param {object} props,

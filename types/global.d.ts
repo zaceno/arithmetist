@@ -15,4 +15,5 @@ type ActionLike<S, X, Y> = Action<S, X> | [Action<S, Y>, Y]
 type ClassProp = import("hyperapp").ClassProp
 type MaybeVNode<S> = import("hyperapp").MaybeVNode<S>
 type Effect<S, X> = [Effecter<S, X>, X]
-type View<S> = (state: S) => MaybeVNode<S> | MaybeVNode<S>[]
+type View<S> = (state: S) => MaybeVNode<S>
+type Subs<S> = (state: S) => (false | true | undefined | Subscription<S, any>)[]

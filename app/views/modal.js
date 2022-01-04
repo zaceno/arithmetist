@@ -1,4 +1,4 @@
-import clickableIcon from "@/lib/views/clickable-icon.js"
+import clickableIcon from "@/views/clickable-icon.js"
 import { div } from "@hyperapp/html"
 
 /**

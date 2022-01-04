@@ -1,3 +1,6 @@
+import onwindowevent from "@/lib/io/on-window-event.js"
+import PickerView from "@/views/table-picker.js"
+
 /**
  * @typedef State
  * @prop {number | null} trackingStart
@@ -6,29 +9,14 @@
 
 /**
  * @template S
- * @typedef Props
- * @prop {Getter<S, State>} get
- * @prop {Setter<S, State>} set
- * @prop {Getter<S, number>} getMaxTable
- * @prop {Action<S, number>} SetMaxTable
+ * @param {object} props
+ * @param {Getter<S, State>} props.get
+ * @param {Setter<S, State>} props.set
+ * @param {Getter<S, number>} props.getMaxTable
+ * @param {Getter<S, {number:number, ratio:number}[]>} props.getRatios
+ * @param {Action<S, number>} props.SetMaxTable
  */
-
-/**
- * @template S
- * @typedef Model
- * @prop {Action<S, any>} Init
- * @prop {Action<S, MouseEvent | TouchEvent>} TouchDown
- * @prop {Action<S, MouseEvent | TouchEvent>} TouchMove
- * @prop {Action<S, any>} StopTracking
- * @prop {(state:S) => boolean} isTracking
- */
-
-/**
- * @template S
- * @param {Props<S>} props
- * @returns {Model<S>}
- */
-export default ({ get, set, getMaxTable, SetMaxTable }) => {
+export default ({ get, set, getMaxTable, SetMaxTable, getRatios }) => {
   /** @type {Action<S, void>}*/
   const Init = state => set(state, { trackingStart: null, boxWidth: null })
 
@@ -87,5 +75,23 @@ export default ({ get, set, getMaxTable, SetMaxTable }) => {
   /** @param {S} state*/
   const isTracking = state => !!get(state)?.trackingStart
 
-  return { Init, TouchDown, TouchMove, StopTracking, isTracking }
+  /** @param {S} state */
+  const view = state =>
+    PickerView({
+      value: getMaxTable(state),
+      ratios: getRatios(state),
+      TouchDown,
+    })
+
+  /** @param {S} state */
+  const subs = state => {
+    if (!isTracking(state)) return []
+    return [
+      onwindowevent("touchmove", TouchMove),
+      onwindowevent("mousemove", TouchMove),
+      onwindowevent("touchend", StopTracking),
+      onwindowevent("mouseup", StopTracking),
+    ]
+  }
+  return { Init, view, subs }
 }

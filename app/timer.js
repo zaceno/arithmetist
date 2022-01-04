@@ -1,3 +1,5 @@
+import onanimationframe from "@/lib/io/animation-frame.js"
+import gauge from "@/views/gauge.js"
 /**
  * @typedef State
  * @prop {boolean} running
@@ -7,24 +9,12 @@
  */
 
 /**
- * @template S
- * @typedef Model
- * @prop {Action<S, number>} Reset
- * @prop {Action<S, number>} Start
- * @prop {Action<S, number>} Update
- * @prop {(s:S) => {full: number, level: number}} gaugeProps
- * @prop {(s:S) => boolean} isRunning
- *
- */
-
-/**
  * @template S,X,Y
  * @param {object} props
  * @param {Getter<S, State>} props.get
  * @param {Setter<S, State>} props.set
  * @param {Action<S, any> | [Action<S, X>, X]} props.onStart
  * @param {Action<S, any>| [Action<S, Y>, Y]} props.onTimeout
- * @returns {Model<S>}
  */
 export default ({ get, set, onStart, onTimeout }) => {
   /** @type {Action<S, number>} */
@@ -84,24 +74,25 @@ export default ({ get, set, onStart, onTimeout }) => {
   }
 
   /** @param {S} state */
-  const gaugeProps = state => {
+  const view = state => {
     let { duration, now, started } = get(state)
-    return !duration
-      ? { full: 1, level: 0 }
-      : {
-          full: duration,
-          level: now - started,
-        }
+    return gauge(
+      !duration
+        ? { full: 1, level: 0 }
+        : {
+            full: duration,
+            level: now - started,
+          }
+    )
   }
 
   /** @param {S} state */
-  const isRunning = state => get(state)?.running
+  const subs = state => (get(state)?.running ? [onanimationframe(Update)] : [])
 
   return {
     Reset,
     Start,
-    Update,
-    gaugeProps,
-    isRunning,
+    view,
+    subs,
   }
 }

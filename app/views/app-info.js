@@ -1,5 +1,5 @@
 import { p, text } from "@hyperapp/html"
-import button from "@/lib/views/button.js"
+import button from "@/views/button.js"
 
 /**
  * @template S
