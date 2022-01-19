@@ -35,7 +35,7 @@ export default ({ get, set, Continue, Restart }) => {
     ])
   }
 
-  /** @param {any} _*/
+  /** @type {Subs<S>}*/
   const subs = _ => []
 
   return { Init, view, subs }

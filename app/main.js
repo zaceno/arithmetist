@@ -57,7 +57,7 @@ const incorrectPage = IncorrectPage({
   set: (state, pageState) => ({
     ...state,
     pageState,
-    pageName: /** @type {const}*/ ("correct"),
+    pageName: /** @type {const}*/ ("incorrect"),
   }),
   Continue: () => NextProblem,
   Restart: () => startPage.Init,
@@ -79,7 +79,7 @@ const problemPage = ProblemPage({
         const correct = left * right === answer
         settings.keepScore(state) &&
           dispatch(scoring.Score, { left, right, correct })
-        dispatch(correct ? correctPage.Init : correctPage.Init, {
+        dispatch(correct ? correctPage.Init : incorrectPage.Init, {
           left,
           right,
         })
@@ -90,7 +90,7 @@ const problemPage = ProblemPage({
 })
 
 /** @type {Action<State, any>}*/
-const Init = state => [
+const Init = () => [
   /** @type {State}*/ ({}),
   [
     dispatch => {
@@ -123,7 +123,7 @@ const view = state => {
     : startPage.view(state)
 }
 
-/** @param {State} state*/
+/** @type {Subs<State>}*/
 const subs = state => {
   let page = state.pageName
   return [

@@ -72,6 +72,7 @@ export default ({ get, set, settings, Check: _Check, Restart }) => {
       keypad.view(state),
     ])
 
+  /** @type {Subs<S>}*/
   const subs = timer.subs
 
   return { Init, view, subs }

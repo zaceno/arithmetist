@@ -75,7 +75,7 @@ export default ({ get, set, getMaxTable, SetMaxTable, getRatios }) => {
   /** @param {S} state*/
   const isTracking = state => !!get(state)?.trackingStart
 
-  /** @param {S} state */
+  /** @type {View<S>}*/
   const view = state =>
     PickerView({
       value: getMaxTable(state),
@@ -83,7 +83,7 @@ export default ({ get, set, getMaxTable, SetMaxTable, getRatios }) => {
       TouchDown,
     })
 
-  /** @param {S} state */
+  /** @type {Subs<S>} */
   const subs = state => {
     if (!isTracking(state)) return []
     return [

@@ -86,7 +86,7 @@ export default ({ get, set, onStart, onTimeout }) => {
     )
   }
 
-  /** @param {S} state */
+  /** @type {Subs<S>}*/
   const subs = state => (get(state)?.running ? [onanimationframe(Update)] : [])
 
   return {
