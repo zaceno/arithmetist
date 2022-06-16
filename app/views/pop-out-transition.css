@@ -1,7 +1,0 @@
-.pop-out {
-  transition: all 0.4s;
-}
-.pop-out-run {
-  opacity: 0;
-  transform: scale(2, 2);
-}

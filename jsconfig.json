@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "strict": true,
+    "target": "esnext",
+    "noImplicitThis": false,
+    "baseUrl": ".",
+    "paths": {
+      "hyperapp": ["ext/hyperapp.d.ts"],
+      "@hyperapp/html": ["ext/hyperapp-html.d.ts"],
+      "lib/*": ["./lib/*"],
+      "app/*": ["./app/*"]
+    }
+  },
+  "include": ["./**/*.js", "./**/*.d.ts"],
+  "exclude": ["./service-worker.js"]
+}

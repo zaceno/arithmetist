@@ -1,9 +1,15 @@
+/** @template S, X @typedef {import('hyperapp').Action<S, X>} Action */
+/** @template S, X @typedef {import('hyperapp').Subscription<S, X>} Subscription */
+/** @template S @typedef {(s:S) => (Subscription<S, any> | boolean | undefined  )[]} Subs */
+
 /**
  * @typedef NumberCounter
  * @prop {number} number
  * @prop {number} wins
  * @prop {number} seen
  */
+
+/** @typedef {NumberCounter[]} State */
 
 /**
  * @param {State} scoreboard
@@ -66,24 +72,11 @@ const getNumber = (scoreboard, max) => {
   return options[fltrd.length].number
 }
 
-/** @typedef {NumberCounter[]} State */
-
-/**
- * @template S
- * @typedef Model
- * @prop {Action<S, any>} Init
- * @prop {Action<S, {left: number, right: number, correct: boolean}>} Score
- * @prop {(s:S) => number} getScore
- * @prop {(s:S) => {number: number, ratio: number}[]} getRatios
- * @prop {(s:S, max: number) => {left: number, right: number}} getProblem
- */
-
 /**
  * @template S
  * @param {object} props
- * @param {Getter<S,State>} props.get
- * @param {Setter<S,State>} props.set
- * @returns {Model<S>}
+ * @param {(s:S) => State} props.get
+ * @param {(s:S, x:State) => S} props.set
  */
 export default ({ set, get }) => {
   /** @type {Action<S,void>} */

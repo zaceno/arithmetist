@@ -1,5 +1,7 @@
-import onwindowevent from "@/lib/io/on-window-event.js"
-import PickerView from "@/views/table-picker.js"
+import onWindowEvent from "lib/io/on-window-event.js"
+/** @template S, X @typedef {import('hyperapp').Action<S, X>} Action */
+/** @template S, X @typedef {import('hyperapp').Subscription<S, X>} Subscription */
+/** @template S @typedef {(s:S) => (Subscription<S,any> | boolean | undefined  )[]} Subs */
 
 /**
  * @typedef State
@@ -9,14 +11,18 @@ import PickerView from "@/views/table-picker.js"
 
 /**
  * @template S
- * @param {object} props
- * @param {Getter<S, State>} props.get
- * @param {Setter<S, State>} props.set
- * @param {Getter<S, number>} props.getMaxTable
- * @param {Getter<S, {number:number, ratio:number}[]>} props.getRatios
- * @param {Action<S, number>} props.SetMaxTable
+ * @typedef TablePickerProps
+ * @prop {(s:S) => State} get
+ * @prop {(s:S, x:State) => S} set
+ * @prop {(s:S) => number} getMaxTable
+ * @prop {Action<S, number>} SetMaxTable
  */
-export default ({ get, set, getMaxTable, SetMaxTable, getRatios }) => {
+
+/**
+ * @template S
+ * @param {TablePickerProps<S>} props
+ */
+export default ({ get, set, getMaxTable, SetMaxTable }) => {
   /** @type {Action<S, void>}*/
   const Init = state => set(state, { trackingStart: null, boxWidth: null })
 
@@ -36,15 +42,7 @@ export default ({ get, set, getMaxTable, SetMaxTable, getRatios }) => {
     const rect = element.getBoundingClientRect()
     return [
       set(state, { trackingStart: getX(event), boxWidth: rect.width }),
-      [
-        dispatch => {
-          dispatch(
-            SetMaxTable,
-            +(/** @type {string} */ (element.getAttribute("data-number")))
-          )
-        },
-        null,
-      ],
+      d => d(SetMaxTable, +(element.getAttribute("data-number") || 0)),
     ]
   }
 
@@ -59,12 +57,7 @@ export default ({ get, set, getMaxTable, SetMaxTable, getRatios }) => {
         trackingStart: trackingStart + boxdiff * boxWidth,
         boxWidth,
       }),
-      [
-        disp => {
-          disp(SetMaxTable, getMaxTable(state) + boxdiff)
-        },
-        null,
-      ],
+      d => d(SetMaxTable, getMaxTable(state) + boxdiff),
     ]
   }
 
@@ -75,23 +68,22 @@ export default ({ get, set, getMaxTable, SetMaxTable, getRatios }) => {
   /** @param {S} state*/
   const isTracking = state => !!get(state)?.trackingStart
 
-  /** @type {View<S>}*/
-  const view = state =>
-    PickerView({
-      value: getMaxTable(state),
-      ratios: getRatios(state),
-      TouchDown,
-    })
-
   /** @type {Subs<S>} */
   const subs = state => {
     if (!isTracking(state)) return []
     return [
-      onwindowevent("touchmove", TouchMove),
-      onwindowevent("mousemove", TouchMove),
-      onwindowevent("touchend", StopTracking),
-      onwindowevent("mouseup", StopTracking),
+      onWindowEvent("touchmove", TouchMove),
+      onWindowEvent("mousemove", TouchMove),
+      onWindowEvent("touchend", StopTracking),
+      onWindowEvent("mouseup", StopTracking),
     ]
   }
-  return { Init, view, subs }
+
+  /** @param {S} state */
+  const model = state => ({
+    maxTable: getMaxTable(state),
+    TouchDown,
+  })
+
+  return { Init, model, subs }
 }

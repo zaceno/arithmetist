@@ -1,155 +1,152 @@
 import { app } from "hyperapp"
-import persistence from "@/lib/io/persistence.js"
-import StartPage from "./start-page.js"
-import ProblemPage from "./problem-page.js"
-import CorrectPage from "./correct-page.js"
-import IncorrectPage from "./incorrect-page.js"
-import Settings from "./settings-model.js"
-import Scoring from "./scoring-model.js"
-
-/** @typedef {import('./start-page.js').State} StartPageState */
-/** @typedef {import('./problem-page.js').State} ProblemPageState */
-/** @typedef {import('./correct-page.js').State} CorrectPageState */
-/** @typedef {import('./incorrect-page.js').State} IncorrectPageState */
+import persistence from "lib/io/persistence.js"
+import StartPage from "app/start-page.js"
+import ProblemPage from "app/problem-page.js"
+import CorrectPage from "app/correct-page.js"
+import IncorrectPage from "app/incorrect-page.js"
+import Scoring from "app/scoring.js"
+/** @template S @typedef {(s:S) => (Subscription<S,any> | boolean | undefined )[]} Subs */
+/** @template S, X @typedef {import('hyperapp').Subscription<S, X>} Subscription */
 
 /**
- * @typedef State
- * @prop {import('./settings-model.js').State} settings
- * @prop {import('./scoring-model.js').State} scoring
- * @prop {'start' | 'problem' | 'correct' | 'incorrect'} pageName
- * @prop { StartPageState | ProblemPageState | CorrectPageState | IncorrectPageState} pageState
+ * @typedef PageStateMap
+ * @prop {import("app/start-page.js").State} start
+ * @prop {import("app/problem-page.js").State} problem
+ * @prop {import("app/correct-page.js").State} correct
+ * @prop {import("app/incorrect-page.js").State} incorrect
  */
+/** @typedef {keyof PageStateMap} PageName */
+/** @template {PageName} N @typedef {PageStateMap[N]} PageState*/
+/**
+ * @template {PageName} N
+ * @typedef State_Page
+ * @prop {N} pageName
+ * @prop {PageStateMap[N]} pageState
+ */
+/**
+ * @typedef State_Common
+ * @prop {number} maxTable,
+ * @prop {boolean} practiceMode,
+ * @prop {import('app/scoring.js').State} scoring,
+ */
+/** @template {PageName} N @typedef {State_Common & State_Page<N>} StateForPage */
+/** @template {PageName} N @typedef {N extends any ? StateForPage<N> : never} StateVariants */
+/** @typedef {StateVariants<PageName>} State */
 
-const settings = Settings({
-  get: state => state.settings,
-  set: (state, settings) => ({ ...state, settings }),
+/** @template [X=any] @typedef {import('hyperapp').Action<State, X>} Action */
+
+/** @type {Action}*/
+const Init = () => [
+  /** @type {State}*/ ({
+    maxTable: 3,
+    practiceMode: false,
+  }),
+  d => d(scoring.Init),
+  d => d(Start),
+]
+
+/** @type {Action}*/
+const TogglePracticeMode = state => ({
+  ...state,
+  practiceMode: !state.practiceMode,
 })
 
+/** @type {Action<number>}*/
+const SetMaxTable = (state, n) => ({ ...state, maxTable: Math.max(3, n) })
+
+/** @type {Action}*/
+const Start = () => startPage.Init
+
+/** @type {Action<{left:number, right:number}>}*/
+const Correct = (_, x) => [correctPage.Init, x]
+
+/** @type {Action<{left: number, right: number}>}*/
+const Incorrect = (_, x) => [incorrectPage.Init, x]
+
+/** @type {Action}*/
+const Problem = state => [
+  problemPage.Init,
+  scoring.getProblem(state, state.maxTable),
+]
+
+/** @type {Action<{left: number, right: number, answer: number}>}*/
+const Check = (state, { left, right, answer }) => {
+  const correct = left * right === answer
+  const Action = correct ? Correct : Incorrect
+  return [
+    state,
+    d => d(Action, { left, right }),
+    !state.practiceMode && (d => d(scoring.Score, { left, right, correct })),
+  ]
+}
+
+/** @type {Action<'start'>}*/
+const ResetScore = () => scoring.Init
+
 const scoring = Scoring({
+  /** @param {State} state*/
   get: state => state.scoring,
   set: (state, scoring) => ({ ...state, scoring }),
 })
 
-const startPage = StartPage({
-  get: state => /**@type {StartPageState}*/ (state.pageState),
-  set: (state, pageState) => ({
-    ...state,
-    pageState,
-    pageName: /** @type {const}*/ ("start"),
-  }),
-  settings,
-  scoring,
-  Next: () => NextProblem,
+/**
+ * @template {PageName} N
+ * @param {N} pageName
+ */
+const pageProps = pageName => ({
+  get: (/** @type {State}*/ state) =>
+    /** @type {PageState<N>}*/ (state.pageState),
+  set: (/** @type {State}*/ state, /**@type {PageState<N>}*/ pageState) =>
+    /** @type {State}*/ ({ ...state, pageState, pageName }),
+  getScore: scoring.getScore,
+  getRatios: scoring.getRatios,
+  getMaxTable: (/** @type {State}*/ state) => state.maxTable,
+  getPracticeMode: (/** @type {State}*/ state) => state.practiceMode,
+  SetMaxTable,
+  TogglePracticeMode,
+  ResetScore,
+  Start,
+  Problem,
+  Check,
+  Correct,
+  Incorrect,
 })
 
-const correctPage = CorrectPage({
-  get: state => /**@type {CorrectPageState}*/ (state.pageState),
-  set: (state, pageState) => ({
-    ...state,
-    pageState,
-    pageName: /** @type {const}*/ ("correct"),
-  }),
-  Continue: () => NextProblem,
-})
+const startPage = StartPage(pageProps("start"))
+const problemPage = ProblemPage(pageProps("problem"))
+const correctPage = CorrectPage(pageProps("correct"))
+const incorrectPage = IncorrectPage(pageProps("incorrect"))
 
-const incorrectPage = IncorrectPage({
-  get: state => /**@type {IncorrectPageState}*/ (state.pageState),
-  set: (state, pageState) => ({
-    ...state,
-    pageState,
-    pageName: /** @type {const}*/ ("incorrect"),
-  }),
-  Continue: () => NextProblem,
-  Restart: () => startPage.Init,
-})
-
-const problemPage = ProblemPage({
-  get: state => /** @type {ProblemPageState}*/ (state.pageState),
-  set: (state, pageState) => ({
-    ...state,
-    pageState,
-    pageName: /** @type {const}*/ ("problem"),
-  }),
-  settings,
-  Restart: () => startPage.Init,
-  Check: (state, { left, right, answer }) => [
-    state,
-    [
-      dispatch => {
-        const correct = left * right === answer
-        settings.keepScore(state) &&
-          dispatch(scoring.Score, { left, right, correct })
-        dispatch(correct ? correctPage.Init : incorrectPage.Init, {
-          left,
-          right,
-        })
-      },
-      null,
-    ],
-  ],
-})
-
-/** @type {Action<State, any>}*/
-const Init = () => [
-  /** @type {State}*/ ({}),
-  [
-    dispatch => {
-      dispatch(settings.Init)
-      dispatch(scoring.Init)
-      dispatch(startPage.Init)
-    },
-    null,
-  ],
-]
-
-/** @type {Action<State, any>}*/
-const NextProblem = state => [
-  problemPage.Init,
-  scoring.getProblem(state, settings.getMax(state)),
-]
-
-/** @type {Action<State, State['scoring']>} */
-const SetScoreData = (state, scoring) => ({ ...state, scoring })
-
-/** @param {State} state*/
-const view = state => {
-  let page = state.pageName
-  return page === "problem"
-    ? problemPage.view(state)
-    : page === "correct"
-    ? correctPage.view(state)
-    : page === "incorrect"
-    ? incorrectPage.view(state)
-    : startPage.view(state)
+/** @param {State} state */
+const currentPage = state => {
+  const pageName = state.pageName
+  return pageName === "problem"
+    ? problemPage
+    : pageName === "correct"
+    ? correctPage
+    : pageName === "incorrect"
+    ? incorrectPage
+    : startPage
 }
 
-/** @type {Subs<State>}*/
-const subs = state => {
-  let page = state.pageName
-  return [
-    state?.scoring && [
-      persistence,
-      {
-        key: "arithmentist-score",
-        data: state.scoring,
-        SetData: SetScoreData,
-      },
-    ],
-    ...(page === "problem"
-      ? problemPage.subs(state)
-      : page === "correct"
-      ? correctPage.subs(state)
-      : page === "incorrect"
-      ? incorrectPage.subs(state)
-      : startPage.subs(state)),
-  ]
-}
+/** @type {(s:State) => State_Common} */
+const getPersistentData = state => ({
+  scoring: state.scoring,
+  practiceMode: state.practiceMode,
+  maxTable: state.maxTable,
+})
+
+/** @type {Action<State_Common>}*/
+const SetPersistentData = (state, data) => ({ ...state, ...data })
 
 const node = document.getElementById("app")
 if (!node) throw new Error("no mount point for app")
 app({
   init: Init,
-  view: view,
-  subscriptions: subs,
+  view: state => currentPage(state).view(state),
+  subscriptions: state => [
+    persistence("state", getPersistentData(state), SetPersistentData),
+    ...currentPage(state).subs(state),
+  ],
   node,
 })

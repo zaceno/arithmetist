@@ -1,42 +1,27 @@
-import pageContainer from "@/views/page-container.js"
-import gauge from "@/views/gauge.js"
-import { backButton, nextButton } from "@/views/nav-buttons.js"
-import problem from "@/views/problem.js"
-import { incorrectBadge } from "@/views/badges.js"
-
+import pageView from "app/views/incorrect-page.js"
+/** @template S, X @typedef {import('hyperapp').Action<S, X>} Action */
+/** @template S, X @typedef {import('hyperapp').Subscription<S, X>} Subscription */
+/** @template S @typedef {(s:S) => (Subscription<S,any> | boolean | undefined)[]} Subs */
 /**
  * @typedef State
  * @prop {number} left
  * @prop {number} right
  */
-
 /**
  * @template S
  * @param {object} props
- * @param {Getter<S, State>} props.get
- * @param {Setter<S, State>} props.set
- * @param {Action<S, any>} props.Continue
- * @param {Action<S, any>} props.Restart
+ * @param {(s:S) => State} props.get
+ * @param {(s:S, x:State) => S} props.set
+ * @param {Action<S, any>} props.Problem
+ * @param {Action<S, any>} props.Start
  */
-export default ({ get, set, Continue, Restart }) => {
+export default ({ get, set, Start, Problem }) => ({
   /** @type {Action<S, {left: number, right: number}>}*/
-  const Init = (state, { left, right }) =>
-    set(state, /** @type {State}*/ ({ left, right }))
+  Init: (state, x) => set(state, x),
 
   /** @param {S} state */
-  const view = state => {
-    const { left, right } = get(state)
-    return pageContainer({ classext: "incorrectpage" }, [
-      gauge({ level: 1, full: 1 }),
-      backButton({ action: Restart }),
-      problem({ left, right, answer: left * right }),
-      incorrectBadge(),
-      nextButton({ action: Continue }),
-    ])
-  }
+  view: state => pageView({ ...get(state), Start, Problem }),
 
   /** @type {Subs<S>}*/
-  const subs = _ => []
-
-  return { Init, view, subs }
-}
+  subs: _ => [],
+})
