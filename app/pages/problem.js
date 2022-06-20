@@ -1,8 +1,7 @@
+import * as Timer from "lib/timer.js"
+import { page, problem, backButton } from "app/views.js"
+import { gauge, keypad } from "lib/widgets/widgets.js"
 /** @template S, X @typedef {import('hyperapp').Action<S, X>} Action */
-/** @template S, X @typedef {import('hyperapp').Subscription<S, X>} Subscription */
-/** @template S @typedef {(s:S) => (Subscription<S,any> | boolean | undefined  )[]} Subs */
-import pageView from "app/views/problem-page.js"
-import Timer from "lib/timer.js"
 
 /**
  * @typedef State
@@ -17,15 +16,15 @@ import Timer from "lib/timer.js"
  * @param {object} props
  * @param {(s:S) => State } props.get
  * @param {(s:S, x:State) => S} props.set
- * @param {(s:S) => boolean} props.getPracticeMode
+ * @param {import('app/settings.js').Model<S>} props.settings
  * @param {Action<S, {left: number, right: number, answer: number}>} props.Check
  * @param {Action<S, any>} props.Start
  */
-export default ({ get, set, getPracticeMode, Check, Start }) => {
+export default ({ get, set, settings, Check, Start }) => {
   /** @type {Action<S, {left: number, right: number}>}*/
   const Init = (state, { left, right }) => [
     set(state, /** @type {State}*/ ({ left, right, entry: "" })),
-    !getPracticeMode(state) && (d => d(timer.Start, 7000)),
+    !settings.getPracticeMode(state) && (d => d(timer.Start, 7000)),
   ]
 
   /** @type {Action<S, string>}*/
@@ -48,29 +47,30 @@ export default ({ get, set, getPracticeMode, Check, Start }) => {
     return [Check, { left, right, answer: +entry }]
   }
 
-  const timer = Timer({
+  const timer = Timer.wire({
     get: state => get(state).timer,
     set: (state, timer) => set(state, { ...get(state), timer }),
     OnTimeout: Done,
   })
 
-  /** @type {Subs<S>}*/
-  const subs = state => [...timer.subs(state)]
+  /** @param {S} state */
+  const subs = state => timer.subs(state)
 
   /** @param {S} state */
   const view = state => {
-    const { left, right, entry } = get(state)
-    return pageView({
-      left,
-      right,
-      entry,
-      timer: timer.status(state),
-      keypad: {
-        OnDigit: AddDigit,
+    let tstat = timer.status(state)
+    let { left, right, entry } = get(state)
+    return page({
+      top: [
+        backButton({ action: Start }),
+        gauge({ full: tstat.duration || 1, level: tstat.ran }),
+      ],
+      main: [problem({ left, right, answer: entry })],
+      bottom: keypad({
         OnBack: Backspace,
+        OnDigit: AddDigit,
         OnEnter: Done,
-      },
-      Start,
+      }),
     })
   }
 

@@ -1,28 +1,25 @@
 import onWindowEvent from "lib/io/on-window-event.js"
+import { text, div } from "@hyperapp/html"
+
 /** @template S, X @typedef {import('hyperapp').Action<S, X>} Action */
-/** @template S, X @typedef {import('hyperapp').Subscription<S, X>} Subscription */
-/** @template S @typedef {(s:S) => (Subscription<S,any> | boolean | undefined  )[]} Subs */
 
 /**
  * @typedef State
  * @prop {number | null} trackingStart
  * @prop {number | null} boxWidth
  */
-
 /**
  * @template S
  * @typedef TablePickerProps
  * @prop {(s:S) => State} get
  * @prop {(s:S, x:State) => S} set
- * @prop {(s:S) => number} getMaxTable
- * @prop {Action<S, number>} SetMaxTable
+ * @prop {import('app/settings.js').Model<S>} settings
  */
-
 /**
  * @template S
  * @param {TablePickerProps<S>} props
  */
-export default ({ get, set, getMaxTable, SetMaxTable }) => {
+export default ({ get, set, settings }) => {
   /** @type {Action<S, void>}*/
   const Init = state => set(state, { trackingStart: null, boxWidth: null })
 
@@ -42,7 +39,7 @@ export default ({ get, set, getMaxTable, SetMaxTable }) => {
     const rect = element.getBoundingClientRect()
     return [
       set(state, { trackingStart: getX(event), boxWidth: rect.width }),
-      d => d(SetMaxTable, +(element.getAttribute("data-number") || 0)),
+      d => d(settings.SetMaxTable, +(element.getAttribute("data-number") || 0)),
     ]
   }
 
@@ -57,7 +54,7 @@ export default ({ get, set, getMaxTable, SetMaxTable }) => {
         trackingStart: trackingStart + boxdiff * boxWidth,
         boxWidth,
       }),
-      d => d(SetMaxTable, getMaxTable(state) + boxdiff),
+      d => d(settings.SetMaxTable, settings.getMaxTable(state) + boxdiff),
     ]
   }
 
@@ -68,7 +65,7 @@ export default ({ get, set, getMaxTable, SetMaxTable }) => {
   /** @param {S} state*/
   const isTracking = state => !!get(state)?.trackingStart
 
-  /** @type {Subs<S>} */
+  /** @template S @param {S} state */
   const subs = state => {
     if (!isTracking(state)) return []
     return [
@@ -79,11 +76,43 @@ export default ({ get, set, getMaxTable, SetMaxTable }) => {
     ]
   }
 
-  /** @param {S} state */
-  const model = state => ({
-    maxTable: getMaxTable(state),
-    TouchDown,
-  })
+  /** @template S
+   * @param {S} state
+   * @param {{number: number, ratio: number}[]} ratios
+   */
+  const view = (state, ratios) => {
+    let maxTable = settings.getMaxTable(state)
+    return div({ class: "table-picker-container" }, [
+      div(
+        {
+          class: "table-picker-row",
+        },
+        ratios.map(({ ratio, number }) =>
+          div(
+            {
+              onmousedown: TouchDown,
+              ontouchstart: TouchDown,
+              "data-number": number,
+              class: "table-picker-block",
+              style: {
+                backgroundColor:
+                  number <= maxTable
+                    ? `hsla(${
+                        ratio * 80 + 20
+                      } , var(--color-saturation), var(--color-lightness)`
+                    : "#555",
+              },
+            },
+            text(number)
+          )
+        )
+      ),
+    ])
+  }
 
-  return { Init, model, subs }
+  return {
+    Init,
+    subs,
+    view,
+  }
 }

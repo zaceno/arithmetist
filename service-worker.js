@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-const CACHE_NAME = "arithmetist-v9"
+const CACHE_NAME = "arithmetist-v10"
 
 //Delete old caches when the cache-name changes
 self.addEventListener("activate", async event => {

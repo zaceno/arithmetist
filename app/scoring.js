@@ -71,7 +71,15 @@ const getNumber = (scoreboard, max) => {
   let fltrd = cumulative(probs).filter(p => p < rando)
   return options[fltrd.length].number
 }
-
+/**
+ * @template S
+ * @typedef Model
+ * @prop {(state:S) => number} getScore
+ * @prop {(state:S) => {number:number, ratio:number}[]} getRatios
+ * @prop {(state:S, max:number) => {left: number, right:number}} getProblem
+ * @prop {Action<S, any>} Init
+ * @prop {Action<S, {left: number, right:number, correct: boolean}>} Score
+ */
 /**
  * @template S
  * @param {object} props
@@ -79,7 +87,7 @@ const getNumber = (scoreboard, max) => {
  * @param {(s:S, x:State) => S} props.set
  */
 export default ({ set, get }) => {
-  /** @type {Action<S,void>} */
+  /** @type {Model<S>['Init']} */
   const Init = state =>
     set(
       state,
@@ -90,18 +98,15 @@ export default ({ set, get }) => {
       }))
     )
 
-  /** @type {Action<S,{correct: boolean, left:number, right:number}>}*/
+  /** @type {Model<S>['Score']} */
   const Score = (state, { left, right, correct }) => {
     let scoreboard = get(state)
     scoreboard = scoreNumber(scoreboard, left, correct)
     scoreboard = scoreNumber(scoreboard, right, correct)
     return set(state, scoreboard)
   }
-  /**
-   * @param {S} state
-   * @param {number} max
-   * @returns {{left:number, right:number}}
-   */
+
+  /** @type {Model<S>['getProblem']} */
   const getProblem = (state, max) => {
     const scoreboard = get(state)
     return {
@@ -109,19 +114,14 @@ export default ({ set, get }) => {
       right: getNumber(scoreboard, max),
     }
   }
-  /**
-   * @param {S} state
-   * @returns {{number:number, ratio:number}[]}
-   */
+
+  /** @type {Model<S>['getRatios']} */
   const getRatios = state =>
     get(state)
       .sort((l, r) => l.number - r.number)
       .map(x => ({ number: x.number, ratio: getRatio(x) }))
 
-  /**
-   * @param {S} state
-   * @returns {number}
-   */
+  /** @type {Model<S>['getScore']} */
   const getScore = state => Math.round(10 * sum(get(state).map(getNumberScore)))
 
   return { Init, Score, getProblem, getRatios, getScore }
